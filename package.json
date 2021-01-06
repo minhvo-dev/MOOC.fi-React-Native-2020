@@ -1,11 +1,13 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
+    "start": "set BROWSER=C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe && set BROWSER_ARGS=--incognito && expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "lint": "eslint \"./src/**/*.{js,jsx}\" App.js --no-error-on-unmatched-pattern",
+    "lint:fix": "eslint \"./src/**/*.{js,jsx}\" App.js --no-error-on-unmatched-pattern --fix"
   },
   "dependencies": {
     "expo": "~38.0.8",
@@ -17,7 +19,10 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
-    "babel-preset-expo": "~8.1.0"
+    "babel-eslint": "^10.1.0",
+    "babel-preset-expo": "~8.1.0",
+    "eslint": "^7.17.0",
+    "eslint-plugin-react": "^7.22.0"
   },
   "private": true
 }
