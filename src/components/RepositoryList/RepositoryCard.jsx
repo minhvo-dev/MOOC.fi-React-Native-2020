@@ -1,9 +1,9 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 
-import theme from "../theme";
-import Subheading from "./Subheading";
-import Text from "./Text";
+import theme from "../../theme";
+import Subheading from "../Subheading";
+import Text from "../Text";
 
 const styles = StyleSheet.create({
   outsideContainder: {

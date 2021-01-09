@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import Text from "./Text";
-import Subheading from "./Subheading";
+import Text from "../Text";
+import Subheading from "../Subheading";
 
 const styles = StyleSheet.create({
   container: {

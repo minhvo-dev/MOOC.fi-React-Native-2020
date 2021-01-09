@@ -17,3 +17,6 @@ debug.log
 
 # git keep
 .gitkeep
+
+# environment variables
+.env*

@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 import StatsList from "./StatsList";
 import RepositoryCard from "./RepositoryCard";
-import theme from "../theme";
+import theme from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
