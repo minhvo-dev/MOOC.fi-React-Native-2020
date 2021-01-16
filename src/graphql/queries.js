@@ -1,25 +1,42 @@
 import { gql } from "apollo-boost";
 
-import { REPOSITORY_DETAILS } from "./fragments";
+import {REPOSITORY_OVERVIEW, REPOSITORY_DETAILS, USER_DETAILS } from "./fragments";
 
 export const GET_REPOSITORIES = gql`
-  query getRepositories {
-    repositories {
+  query getRepositories (
+    $orderBy: AllRepositoriesOrderBy
+    $orderDirection: OrderDirection
+  ) {
+    repositories (
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
       edges {
         node {
-          ...RepositoryDetails
+          ...RepositoryOverview
         }
       }
     }
   }
-  ${REPOSITORY_DETAILS}
+  ${REPOSITORY_OVERVIEW}
 `;
 
 export const GET_AUTHORIZED_USER = gql`
   query getAuthorizedUser {
     authorizedUser {
-      id
-      username
+      ...UserDetails
     }
   }
+  ${USER_DETAILS}
+`;
+
+export const GET_REPOSITORY = gql`
+  query getRepository (
+    $id: ID!
+  ) {
+    repository(id: $id) {
+      ...RepositoryDetails
+    }
+  }
+  ${REPOSITORY_DETAILS}
 `;

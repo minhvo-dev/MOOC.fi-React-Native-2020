@@ -1,21 +1,21 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
+import theme from "../../theme";
 import RepositoryItem from "./RepositoryItem";
+import OrderPicker from "./OrderPicker";
+
 import useRepositories from "../../hooks/useRepositories";
 
 const styles = StyleSheet.create({
   separator: {
-    height: 10
+    height: theme.spacing.small
   }
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const RepositoryList = () => {
-  const { repositories } = useRepositories();
-
-  // Get the nodes from the edges array
+export const RepositoryListContainer = ({ repositories, setOrder }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
     : [];
@@ -24,8 +24,22 @@ const RepositoryList = () => {
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
-      renderItem={RepositoryItem}
+      renderItem={({ item }) => <RepositoryItem item={item} />}
       keyExtractor={item => item.id}
+      ListHeaderComponent={() => <OrderPicker setOrder={setOrder} />}
+    />
+  );
+};
+
+const RepositoryList = () => {
+  const [order, setOrder] = React.useState({});
+
+  const { repositories } = useRepositories(order);
+
+  return (
+    <RepositoryListContainer 
+    repositories={repositories} 
+    setOrder={setOrder}
     />
   );
 };

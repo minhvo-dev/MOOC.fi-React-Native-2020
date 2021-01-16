@@ -17,8 +17,8 @@ const StatsItem = ({ label, stats }) => {
   const statsStr = stats >= 1000 ? `${(stats / 1000).toFixed(1)}k` : `${stats}`;
   return (
     <View style={styles.container}>
-      <Subheading>{statsStr}</Subheading>
-      <Text>{label}</Text>
+      <Subheading testID="statsSubHeading">{statsStr}</Subheading>
+      <Text testID="statsText">{label}</Text>
     </View>
   );
 };

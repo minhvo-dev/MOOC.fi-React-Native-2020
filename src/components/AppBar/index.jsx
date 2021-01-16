@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Link } from "react-router-native";
+import { Link, useHistory } from "react-router-native";
 import Constants from "expo-constants";
 import { useQuery, useApolloClient } from "@apollo/react-hooks";
 
@@ -18,21 +18,49 @@ const styles = StyleSheet.create({
   }
 });
 
+const AuthorizedTabs = ({ review, logout }) => {
+  return (
+    <>
+      <AppBarTab onPress={review}>Create a review</AppBarTab>
+      <AppBarTab onPress={logout}>Sign out</AppBarTab>
+    </>
+  );
+};
+
+const UnauthorizedTabs = () => {
+  return (
+    <>
+      <Link to="/signIn" component={AppBarTab}>Sign in</Link>
+      <Link to="/signUp" component={AppBarTab}>Sign up</Link>
+    </>
+  );
+};
+
 const AppBar = () => {
-  const { data, loading } = useQuery(GET_AUTHORIZED_USER);
   const authStorage = useContext(AuthStorageContext);
   const apolloClient = useApolloClient();
+  const history = useHistory();
+
+  const { data } = useQuery(GET_AUTHORIZED_USER);
+  const authorizedUser = data ? data.authorizedUser : undefined;
+
   const logout = async () => {
     await authStorage.removeAccessToken();
-    apolloClient.resetStore();
+    await apolloClient.resetStore();
+    history.push("/");
+  };
+
+  const navigateToReview = () => {
+    history.push("/review");
   };
 
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
         <Link to="/" component={AppBarTab}>Repositories</Link>
-        {(loading || !data.authorizedUser) && <Link to="/login" component={AppBarTab}>Sign in</Link>}
-        {!loading && data.authorizedUser && <AppBarTab onClick={logout}>Sign out</AppBarTab>}
+        {authorizedUser
+          ? <AuthorizedTabs logout={logout} review={navigateToReview} />
+          : <UnauthorizedTabs />}
       </ScrollView>
     </View>
   );

@@ -1,9 +1,10 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { useHistory } from "react-router-native";
 
+import theme from "../../theme";
 import StatsList from "./StatsList";
 import RepositoryCard from "./RepositoryCard";
-import theme from "../../theme";
 
 const styles = StyleSheet.create({
   container: {
@@ -17,11 +18,19 @@ const styles = StyleSheet.create({
 });
 
 const RepositoryItem = ({ item }) => {
+  const history = useHistory();
+
+  const onPress = () => {
+    history.push(`/repository/${item.id}`);
+  };
+
   return (
-    <View style={styles.container}>
-      <RepositoryCard repo={item} />
-      <StatsList repo={item} />
-    </View>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.container}>
+        <RepositoryCard repo={item} />
+        <StatsList repo={item} />
+      </View>
+    </TouchableOpacity>
   );
 };
 

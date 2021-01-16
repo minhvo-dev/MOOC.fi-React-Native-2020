@@ -88,13 +88,13 @@ const RepositoryCard = ({ repo }) => {
 
       <View style={insideContainerStyle}>
         <View style={textContainerStyle}>
-          <Subheading>{repo.fullName}</Subheading>
+          <Subheading testID="repoFullname">{repo.fullName}</Subheading>
         </View>
         <View style={textContainerStyle}>
-          <Text>{repo.description}</Text>
+          <Text testID="repoDescription">{repo.description}</Text>
         </View>
         <View style={languageContainerStyle}>
-          <Text style={styles.whiteColor}>{repo.language}</Text>
+          <Text style={styles.whiteColor} testID="repoLanguage">{repo.language}</Text>
         </View>
       </View>
     </View>

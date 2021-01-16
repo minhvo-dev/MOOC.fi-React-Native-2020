@@ -21,10 +21,12 @@ const useSignIn = () => {
       }
     });
 
-    await authStorage.setAccessToken(data.authorize.accessToken);
-    apolloClient.resetStore();
+    if (data && data.authorize) {
+      await authStorage.setAccessToken(data.authorize.accessToken);
+      await apolloClient.resetStore();
+    }
 
-    return result;
+    return data;
   };
 
   return [signIn, result];
