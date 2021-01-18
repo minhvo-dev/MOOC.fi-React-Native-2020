@@ -6,7 +6,6 @@ import theme from "../../theme";
 import RepositoryItem from "../RepositoryList/RepositoryItem";
 import Subheading from "../Subheading";
 
-
 const styles = StyleSheet.create({
   container: {
     marginBottom: theme.spacing.small,

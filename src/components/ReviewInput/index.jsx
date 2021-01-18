@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { useHistory } from "react-router-native";
 
 import ReviewForm from "./ReviewForm";
-import useReview from "../../hooks/useReview";
+import useCreateReview from "../../hooks/useCreateReview";
 
 const initialValues = {
   ownerName: "",
@@ -41,7 +41,7 @@ const ReviewInputContainer = ({ onSubmit }) => (
 
 const ReviewInput = () => {
   const history = useHistory();
-  const [createReview] = useReview();
+  const [createReview] = useCreateReview();
 
   const onSubmit = async ({ ownerName, repositoryName, rating, review }) => {
     const result = await createReview({ ownerName, repositoryName, rating, review });

@@ -2,11 +2,12 @@ import React, { useContext } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Link, useHistory } from "react-router-native";
 import Constants from "expo-constants";
-import { useQuery, useApolloClient } from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/react-hooks";
+
+import useUser from "../../hooks/useUser";
 
 import theme from "../../theme";
 import AppBarTab from "./AppBarTab";
-import { GET_AUTHORIZED_USER } from "../../graphql/queries";
 import AuthStorageContext from "../../contexts/AuthStorageContext";
 
 const styles = StyleSheet.create({
@@ -18,10 +19,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const AuthorizedTabs = ({ review, logout }) => {
+const AuthorizedTabs = ({ createReview, myReviews, logout }) => {
   return (
     <>
-      <AppBarTab onPress={review}>Create a review</AppBarTab>
+      <AppBarTab onPress={createReview}>Create a review</AppBarTab>
+      <AppBarTab onPress={myReviews}>My reviews</AppBarTab>
       <AppBarTab onPress={logout}>Sign out</AppBarTab>
     </>
   );
@@ -41,8 +43,7 @@ const AppBar = () => {
   const apolloClient = useApolloClient();
   const history = useHistory();
 
-  const { data } = useQuery(GET_AUTHORIZED_USER);
-  const authorizedUser = data ? data.authorizedUser : undefined;
+  const { authorizedUser } = useUser();
 
   const logout = async () => {
     await authStorage.removeAccessToken();
@@ -50,8 +51,10 @@ const AppBar = () => {
     history.push("/");
   };
 
-  const navigateToReview = () => {
-    history.push("/review");
+  const navigateTo = (where) => {
+    return () => {
+      history.push(where);
+    };
   };
 
   return (
@@ -59,8 +62,12 @@ const AppBar = () => {
       <ScrollView horizontal>
         <Link to="/" component={AppBarTab}>Repositories</Link>
         {authorizedUser
-          ? <AuthorizedTabs logout={logout} review={navigateToReview} />
-          : <UnauthorizedTabs />}
+          ? <AuthorizedTabs
+            logout={logout}
+            createReview={navigateTo("/createReview")}
+            myReviews={navigateTo("/myReviews")} />
+          : <UnauthorizedTabs />
+        }
       </ScrollView>
     </View>
   );

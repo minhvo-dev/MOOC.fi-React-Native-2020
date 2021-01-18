@@ -14,20 +14,6 @@ export const REPOSITORY_DETAILS = gql`
     forksCount
     reviewCount
     ratingAverage
-    reviews {
-      edges {
-        node {
-          id
-          rating
-          createdAt
-          text
-          user {
-            id
-            username
-          }
-        }
-      }
-    }
   }
 `;
 
@@ -50,5 +36,31 @@ export const USER_DETAILS = gql`
     id
     username
     createdAt
+  }
+`;
+
+export const PAGEINFO_DETAILS = gql`
+  fragment PageInfoDetails on PageInfo {
+    endCursor
+    startCursor
+    totalCount
+    hasNextPage
+  }
+`;
+
+export const REVIEW_DETAILS = gql`
+  fragment ReviewDetails on Review {
+    id
+    text
+    rating
+    createdAt
+    repository {
+      id
+      fullName
+    }
+    user {
+      id
+      username
+    }
   }
 `;

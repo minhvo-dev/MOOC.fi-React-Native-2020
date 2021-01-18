@@ -4,7 +4,7 @@ import * as yup from "yup";
 import { useHistory } from "react-router-native";
 
 import SignUpForm from "./SignUpForm";
-import useUser from "../../hooks/useUser";
+import useCreateUser from "../../hooks/useCreateUser";
 import useSignIn from "../../hooks/useSignIn";
 
 const initialValues = {
@@ -43,7 +43,7 @@ const SignUpContainer = ({ onSubmit }) => (
 
 const SignUp = () => {
   const history = useHistory();
-  const [createUser] = useUser();
+  const [createUser] = useCreateUser();
   const [signIn] = useSignIn();
 
   const onSubmit = async ({ username, password }) => {

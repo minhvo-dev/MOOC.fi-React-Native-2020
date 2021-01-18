@@ -1,38 +1,48 @@
 import React from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native";
 import { useParams } from "react-router-native";
 
 import useRepository from "../../hooks/useRepository";
 
-import theme from "../../theme";
+import ItemSeparator from "../ItemSeparator";
 import RepositoryView from "./RepositoryView";
-import ReviewItem from "./ReviewItem";
+import { ReviewItemDetail } from "../MyReviewList/ReviewItem";
 
-const styles = StyleSheet.create({
-  separator: {
-    height: theme.spacing.small
-  }
-});
-
-const ItemSeparator = () => <View style={styles.separator} />;
+import { END_REACHED_THRESHOLD, NUMBER_REVIEWS_TO_FETCH } from "../../constants";
 
 const RepositoryEntry = () => {
   const { id } = useParams();
-  const { repository } = useRepository(id);
+  const { repository, fetchMore } = useRepository({
+    id,
+    first: NUMBER_REVIEWS_TO_FETCH
+  });
 
   if (!repository) {
     return null;
   }
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   const reviews = repository.reviews.edges.map(edge => edge.node);
 
   return (
     <FlatList
       data={reviews}
-      renderItem={({ item }) => <ReviewItem review={item} />}
+      renderItem={({ item }) => (
+        <ReviewItemDetail
+          heading={item.user.username}
+          rating={item.rating}
+          text={item.text}
+          date={item.createdAt}
+        />
+      )}
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => <RepositoryView repository={repository} />}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={END_REACHED_THRESHOLD}
     />
   );
 };

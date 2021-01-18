@@ -13,7 +13,6 @@
   "dependencies": {
     "@apollo/react-hooks": "^4.0.0",
     "@react-native-community/async-storage": "~1.11.0",
-    "@react-native-picker/picker": "^1.9.10",
     "apollo-boost": "^0.4.9",
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
@@ -26,13 +25,13 @@
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
-    "react-native-picker-select": "^8.0.4",
+    "react-native-paper": "^4.7.0",
     "react-native-web": "~0.11.7",
     "react-router-native": "^5.2.0",
     "yup": "^0.32.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.6",
+    "@babel/core": "^7.12.10",
     "@expo/webpack-config": "^0.12.52",
     "@testing-library/jest-native": "^3.4.3",
     "@testing-library/react-native": "^7.1.0",

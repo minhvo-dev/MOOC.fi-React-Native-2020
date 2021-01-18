@@ -1,26 +1,54 @@
-import { useMutation } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
-import { CREATE_USER } from "../graphql/mutations";
+import { GET_AUTHORIZED_USER } from "../graphql/queries";
 
-const useUser = () => {
-  const [createUser_, result] = useMutation(CREATE_USER, {
+const useUser = (variables) => {
+  const { data, loading, fetchMore, ...rest } = useQuery(GET_AUTHORIZED_USER, {
+    variables,
+    fetchPolicy: "cache-and-network",
     onError: (error) => {
       console.log(error);
     }
   });
 
-  const createUser = async ({ username, password }) => {
-    const { data } = await createUser_({
+  const handleFetchMore = () => {
+    const canFetchMore = variables.includeReviews && !loading && data.authorizedUser.reviews.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
+    }
+
+    fetchMore({
+      query: GET_AUTHORIZED_USER,
       variables: {
-        username,
-        password
+        after: data.authorizedUser.reviews.pageInfo.endCursor,
+        ...variables
+      },
+      updateQuery: (previousResult, { fetchMoreResult }) => {
+        const nextResult = {
+          authorizedUser: {
+            ...fetchMoreResult.authorizedUser, // either use previous result or new is fine
+            reviews: {
+              ...fetchMoreResult.authorizedUser.reviews, // new pageinfo
+              edges: [ // combine two edges
+                ...previousResult.authorizedUser.reviews.edges,
+                ...fetchMoreResult.authorizedUser.reviews.edges
+              ]
+            }
+          }
+        };
+
+        return nextResult;
       }
     });
-
-    return data;
   };
 
-  return [createUser, result];
+  return {
+    authorizedUser: data ? data.authorizedUser : undefined,
+    loading,
+    fetchMore: handleFetchMore,
+    ...rest
+  };
 };
 
 export default useUser;

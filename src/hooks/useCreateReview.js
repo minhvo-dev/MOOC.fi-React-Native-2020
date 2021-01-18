@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/react-hooks";
 
 import { CREATE_REVIEW } from "../graphql/mutations";
 
-const useReview = () => {
+const useCreateReview = () => {
   const [createReview_, result] = useMutation(CREATE_REVIEW, {
     onError: (error) => {
       console.log(error.graphQLErrors[0].message);
@@ -25,4 +25,4 @@ const useReview = () => {
   return [createReview, result];
 };
 
-export default useReview;
+export default useCreateReview;
